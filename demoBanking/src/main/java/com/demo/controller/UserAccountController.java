@@ -24,6 +24,7 @@ public class UserAccountController {
 	
 	String userAName;
 	
+	//view useraccounts
 	@GetMapping("/useraccount")
 	public String userInfo(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");

@@ -9,6 +9,5 @@ import com.demo.model.User;
 public interface UserRepository extends JpaRepository<User, Integer>{
 
 	User findByUserNameAndPassword(String userName, String password);
-
 	User save(User newUser);
 }

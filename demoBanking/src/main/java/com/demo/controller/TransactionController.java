@@ -1,6 +1,10 @@
 package com.demo.controller;
 
 
+import java.util.Objects;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.demo.model.Transaction;
+import com.demo.model.User;
 import com.demo.service.TransactionService;
 
 @Controller
@@ -23,14 +28,22 @@ public class TransactionController {
 	
 		//new transaction
 		@GetMapping("/newtransaction/{userAccountId}")
-		public String newTransaction(@PathVariable("userAccountId") String userId, Model model) {
+		public String newTransaction(HttpSession session, @PathVariable("userAccountId") String userId, Model model) {
+			User user = (User)session.getAttribute("user");
+			if(Objects.isNull(user)) {
+				return "redirect:/";
+			}
 			transaction.setUserAccountId(Integer.parseInt(userId));
 			model.addAttribute("transaction", transaction);
 			return "new_transaction";
 		}
 		//new deposit
 		@GetMapping("/newdeposit/{userAccountId}")
-		public String newDeposit(@PathVariable("userAccountId") String userId, Model model) {
+		public String newDeposit(HttpSession session, @PathVariable("userAccountId") String userId, Model model) {
+			User user = (User)session.getAttribute("user");
+			if(Objects.isNull(user)) {
+				return "redirect:/";
+			}
 			transaction.setUserAccountId(Integer.parseInt(userId));
 			model.addAttribute("transaction", transaction);
 			return "new_deposit";
@@ -51,7 +64,11 @@ public class TransactionController {
 		}
 		
 		@GetMapping("/transactionhistory/{userAccountId}")
-		public String viewTransactionHistory(@PathVariable("userAccountId") String userId, Model model) {
+		public String viewTransactionHistory(HttpSession session, @PathVariable("userAccountId") String userId, Model model) {
+			User user = (User)session.getAttribute("user");
+			if(Objects.isNull(user)) {
+				return "redirect:/";
+			}
 			model.addAttribute("listTransaction", tranService.getTransactionBy(userId));
 			return "transaction";
 		}
